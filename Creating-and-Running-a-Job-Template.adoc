@@ -108,3 +108,6 @@ Figure 17: New Website with Personalized Test Message
 *End Result*
 
 At this point in the workshop, you've experienced the core functionality of Ansible Tower. But wait…? there's more! You've just begun to explore the possibilities of Ansible Core and Tower. Take a look at the resources page in this guide to explore some more features.
+
+
+link:TableOfContents.adoc[Table Of Contents]

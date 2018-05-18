@@ -1,0 +1,6 @@
+= Ansible Workshop Table Of Contents
+
+* Lab 0. link:Ansible-Core-Workshop-Labs.adoc[Ansible Core Workshop Labs]
+* Lab 1. link:Installing-Ansible-Tower-Workshop-Labs.adoc[Installing Ansible Tower]
+* Lab 2. link:Configuring-Ansible-Tower.adoc[Configuring Ansible Tower]
+* Lab 3. link:Creating-and-Running-a-Job-Template.adoc[Creating and Running a Job Template]

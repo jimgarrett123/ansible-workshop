@@ -151,3 +151,7 @@ Figure 10: web inventory group detail
 *End Result*
 
 At this point, we are doing with our basic configuration of Ansible Tower. In the next exercise, we will be solely focused on creating and running a job template so you can see Tower in action.
+
+link:Creating-and-Running-a-Job-Template.adoc[Next Lab]
+
+link:TableOfContents.adoc[Table Of Contents]

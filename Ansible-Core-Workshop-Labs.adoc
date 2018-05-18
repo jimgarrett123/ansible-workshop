@@ -670,3 +670,7 @@ NOTE: refer back to your lab machine ID's
 You should see a web page with a test message.
 
 You have completed Lab 5!
+
+link:Installing-Ansible-Tower-Workshop-Labs.adoc[Next Lab]
+
+link:TableOfContents.adoc[Table Of Contents]
