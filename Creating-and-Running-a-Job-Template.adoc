@@ -5,7 +5,7 @@ A job template is a definition and set of parameters for running an Ansible job.
 Job templates are useful to execute the same job many times.
 
 [.lead]
-*Creating a Job Template*
+=  *Creating a Job Template*
 
 *Step 1:* Select TEMPLATES
 
@@ -64,7 +64,7 @@ Step 7: Select SAVE image:images/save.png[]
 Step 8: Back on the main Job Template page, select SAVE image:images/save.png[] again.
 
 [.lead]
-*Running a Job Template*
+= *Running a Job Template*
 
 Now that you've sucessfully created your Job Template, you are ready to launch it. Once you do, you will be redirected to a job screen which is refreshing in realtime showing you the status of the job.
 
@@ -105,7 +105,7 @@ image::images/new_website.png[]
 Figure 17: New Website with Personalized Test Message
 
 [.lead]
-*End Result*
+= *End Result*
 
 At this point in the workshop, you've experienced the core functionality of Ansible Tower. But wait…? there's more! You've just begun to explore the possibilities of Ansible Core and Tower. Take a look at the resources page in this guide to explore some more features.
 

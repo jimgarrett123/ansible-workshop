@@ -2,7 +2,7 @@
 
 NOTE: In the event your company laptop is forced to route through your internal VPN and you can not disable the VPN client, you can access the lab systems via ssh by routing through; https://tools.bartlweb.net/webssh/
 
-*Lab #1. Ansible_Install*
+= *Lab #1. Ansible_Install*
 
 For this lab, ansible has already been installed during the lab provisioning process.
 
@@ -23,7 +23,11 @@ inventory = ~instruct1/lightbulb/lessons/lab_inventory/instruct1-instances.txt
 host_key_checking = False
 ....
 
-*Lab #2. Adhoc_commands*
+
+#------------------------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+= *Lab #2. Adhoc_commands*
 
 TASK 1. Test that Ansible is setup correctly to communicate with all hosts in your inventory using the `ping` module;
 
@@ -107,7 +111,14 @@ node-3 | SUCCESS => {
 *ansible all -m ping --limit '!control'*
 
 
-*Lab #3. Simple_playbook (nginx)* +
+
+
+
+
+#------------------------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+= *Lab #3. Simple_playbook (nginx)* +
 This example is designed to be used as a quick introduction to playbook structure that demonstrates how Ansible works.
 This playbook assures the hosts in a group called "web" has the Nginx web server present and is started with a static custom home page. The hosts are presumed to be running a Red Hat family linux.
 
@@ -186,7 +197,15 @@ i.e. http://34.229.6.4
 If successful, you should see a web page with the Ansible logo.
 
 
-*Lab #4. Basic_Playbook (A more practical playbook)*
+
+
+
+
+#------------------------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+
+= *Lab #4. Basic_Playbook (A more practical playbook)*
 
 Create an Ansible playbook that will assure nginx is present, configured and running on all hosts in the "web" group:
 
@@ -371,7 +390,14 @@ Playbook Solution:
         - /usr/share/nginx/html/index.html
 ....
 
-*Lab #5.* Roles +
+
+
+
+#------------------------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+
+= *Lab #5.* Roles +
 Your assignment is simple: refactor the Ansible playbook you've been developing into a role called "nginx-simple".
 
 This assignment should result in a drop in replacement that is portable and more modular. It does not add any new tasks or functionality.

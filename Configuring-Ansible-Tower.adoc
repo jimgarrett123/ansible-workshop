@@ -13,7 +13,7 @@ There are a number of constructs in the Ansible Tower UI that enable multi-tenan
 
 
 [.lead]
-*Logging into Tower and Installing the License Key*
+= *Logging into Tower and Installing the License Key*
 
 *Step 1:* To log in, use the username *admin* and and the password *ansibleWS*.
 
@@ -34,7 +34,7 @@ Figure 4: Uploading a License
 *Step 5:* Click on *SUBMIT*
 
 [.lead]
-*Creating a Credential*
+= *Creating a Credential*
 
 Credentials are utilized by Tower for authentication when launching jobs against machines, synchronizing with inventory sources, and importing project content from a version control system.
 
@@ -70,7 +70,7 @@ Figure 5: Adding a Credential
 Step 5: Select SAVE image:images/save.png[Save, title="Save"]
 
 [.lead]
-*Creating a Project*
+= *Creating a Project*
 
 A Project is a logical collection of Ansible playbooks, represented in Tower. You can manage playbooks and playbook directories by either placing them manually under the Project Base Path on your Tower server, or by placing your playbooks into a source code management (SCM) system supported by Tower, including Git, Subversion, and Mercurial.
 
@@ -102,7 +102,7 @@ Figure 6: Defining a Project
 
 
 [.lead]
-*Creating an Inventory*
+= *Creating an Inventory*
 
 An inventory is a collection of hosts against which jobs may be launched. Inventories are divided into groups and these groups contain the actual hosts. Groups may be sourced manually, by entering host names into Tower, or from one of Ansible Towers supported cloud providers.
 
@@ -148,7 +148,7 @@ image::images/web_inventory_group_detail.png[]
 Figure 10: web inventory group detail
 
 [.lead]
-*End Result*
+= *End Result*
 
 At this point, we are doing with our basic configuration of Ansible Tower. In the next exercise, we will be solely focused on creating and running a job template so you can see Tower in action.
 
