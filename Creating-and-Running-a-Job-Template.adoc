@@ -1,0 +1,110 @@
+= Exercise 1.3 - Creating and Running a Job Template
+
+A job template is a definition and set of parameters for running an Ansible job. 
+
+Job templates are useful to execute the same job many times.
+
+[.lead]
+*Creating a Job Template*
+
+*Step 1:* Select TEMPLATES
+
+*Step 2:* Click on ADD Add
+
+*Step 3:* Complete the form using the following values and SAVE
+
+|===
+NAME | Apache Basic Job Template
+|
+DESCRIPTION | Template for the apache-basic-playbook
+|
+JOB TYPE | Run
+|
+INVENTORY | Ansible Workshop Inventory
+|
+PROJECT | Ansible Workshop Project
+|
+PLAYBOOK | examples/apache-basic-playbook/site.yml
+|
+MACHINE CREDENTIAL | Ansible Workshop Credential
+|
+LIMIT | web
+|
+OPTIONS | image:images/enable_priviledge.png[]
+|===
+
+image::images/detail_job_template.png[]
+Figure 11: Job Template Form
+
+*Step 4:* Select ADD SURVEY image:images/add.png[]
+
+*Step 5:* Complete the survey form with following values
+
+|===
+PROMPT | Please enter a test message for your new website
+|
+DESCRIPTION | Website test message prompt
+|
+ANSWER VARIABLE NAME | apache_test_message
+|
+ANSWER TYPE | Text
+|
+MINIMUM/MAXIMUM LENGTH | Use the defaults
+|
+DEFAULT ANSWER | Be creative, keep it clean, we're all professionals here
+|===
+
+image::images/survey_form.png[]
+Figure 12: Survey Form
+
+Step 6: Select ADD image:images/add.png[]
+
+Step 7: Select SAVE image:images/save.png[]
+
+Step 8: Back on the main Job Template page, select SAVE image:images/save.png[] again.
+
+[.lead]
+*Running a Job Template*
+
+Now that you've sucessfully created your Job Template, you are ready to launch it. Once you do, you will be redirected to a job screen which is refreshing in realtime showing you the status of the job.
+
+*Step 1:* Select JOB TEMPLATES +
+
+NOTE: Alternatively, if you haven't navigated away from the job templates creation page, you can scroll down to see all existing job templates
+
+*Step 2:* Click on the rocketship icon Add for the Apache Basic Job Template
+
+*Step 3:* When prompted, enter your desired test message
+
+image::images/survey_prompt.png[]
+Figure 13: Survey Prompt
+
+*Step 4:* Select LAUNCH image:images/launch.png[]
+
+Step 5: Sit back, watch the magic happen
+
+Once the job is running, on the left, you'll have details in regards to what playbook it's running, what the status is, i.e. pending, running, or complete. You'll also notice the apache_test_message being passed in as an 'extra_variable.'
+
+To the right, you can view standard output; the same way you could if you were running Ansible Core from the command line.
+
+image::images/job_summary.png[]
+Figure 14: Job Summary
+
+You can also click on the nodes in the standard output under a specific task for additional information. ---
+
+image::images/play_and_task_details.png[]
+Figure 15: Play and Task Details
+
+*Step 6:* Once your job is sucessful, navigate to your new website
+
+http://<IP_of_node-1_or_node-2>
+
+If all went well, you should see something like this, but with your own custom message of course.
+
+image::images/new_website.png[]
+Figure 17: New Website with Personalized Test Message
+
+[.lead]
+*End Result*
+
+At this point in the workshop, you've experienced the core functionality of Ansible Tower. But wait…? there's more! You've just begun to explore the possibilities of Ansible Core and Tower. Take a look at the resources page in this guide to explore some more features.

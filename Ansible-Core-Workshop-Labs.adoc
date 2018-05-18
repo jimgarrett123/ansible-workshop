@@ -1,0 +1,672 @@
+= Ansible Core Workhsop Labs
+
+NOTE: In the event your company laptop is forced to route through your internal VPN and you can not disable the VPN client, you can access the lab systems via ssh by routing through; https://tools.bartlweb.net/webssh/
+
+*Lab #1. Ansible_Install*
+
+For this lab, ansible has already been installed during the lab provisioning process.
+
+To verify ansible is installed on your control machine (TRAINING-LAB-studentnn-ansible), ssh into the VM and type;
+
+*ansible --version* +
+*ansible --help*
+
+
+Verify your ansible.cfg file looks like the following by typing cat ~/.ansible.cfg +
+Example output: +
+$ cat ~/.ansible.cfg
+....
+[defaults]
+connection = smart
+timeout = 60
+inventory = ~instruct1/lightbulb/lessons/lab_inventory/instruct1-instances.txt
+host_key_checking = False
+....
+
+*Lab #2. Adhoc_commands*
+
+TASK 1. Test that Ansible is setup correctly to communicate with all hosts in your inventory using the `ping` module;
+
+*ansible all -m ping*
+
+TASK 2. Fetch and display to STDOUT Ansible facts using the `setup` module;
+
+*ansible all -m setup*
+
+Example Output;
+....
+node-2 | SUCCESS => {
+    "ansible_facts": {
+        "ansible_all_ipv4_addresses": [
+            "10.0.1.57"
+        ], 
+        "ansible_default_ipv4": {
+            "address": "10.0.1.57", 
+            "alias": "eth0", 
+            "broadcast": "10.0.1.255", 
+            "gateway": "10.0.1.1", 
+            "interface": "eth0", 
+            "macaddress": "0a:5e:fb:bf:e8:aa", 
+            "mtu": 9001, 
+            "netmask": "255.255.255.0", 
+            "network": "10.0.1.0", 
+            "type": "ether"
+        }, 
+        "ansible_default_ipv6": {}, 
+        "ansible_device_links": {
+            "ids": {}, 
+            "labels": {}, 
+            "masters": {}, 
+            "uuids": {
+                "xvda2": [
+                    "65722bd1-fccc-453e-a96a-8f3599aa0466"
+                ]
+            }
+        }, 
+
+<<< Output Truncated >>>
+....
+
+
+*TASK 3. Setup and enable the EPEL package repository on the hosts in the "web" group using the yum module;*
+
+ansible web -b -m yum -a "name=https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm state=present"
+
+NOTE: Run this the command the first time and notice the changes as identified in stdout.
+
+*TASK 3b. Re-run the above command and notice ansible does not attempt any changes as the package has been installed. the new output from re-running the command should be similar to below;*
+
+....
+node-1 | SUCCESS => {
+    "changed": false, 
+    "failed": false, 
+    "msg": "", 
+    "rc": 0, 
+    "results": []
+}
+node-2 | SUCCESS => {
+    "changed": false, 
+    "failed": false, 
+    "msg": "", 
+    "rc": 0, 
+    "results": []
+}
+node-3 | SUCCESS => {
+    "changed": false, 
+    "failed": false, 
+    "msg": "", 
+    "rc": 0, 
+    "results": []
+}
+....
+*TASK 4. EXTRA CREDIT: Try running the following commands on your control node and review the output. The last command shows how to specify a specific node for exclusion using the "--limit" switch.*
+
+*ansible all -m setup -a "gather_subset=virtual"* +
+*ansible all -m setup -a "filter=ansible_fqdn*"* +
+*ansible all -m command -a "uptime"* +
+*ansible all -m ping --limit '!control'*
+
+
+*Lab #3. Simple_playbook (nginx)* +
+This example is designed to be used as a quick introduction to playbook structure that demonstrates how Ansible works.
+This playbook assures the hosts in a group called "web" has the Nginx web server present and is started with a static custom home page. The hosts are presumed to be running a Red Hat family linux.
+
+*TASK 1.* On your control node, change to the directory; /home/studentnn/lightbulb/workshops/simple_playbook/resources (please note you will need to specify the correct user under the home directory)
+
+To change directories, type; +
+*cd /home/studentnn/lightbulb/workshops/ansible_engine/simple_playbook/resources *
+
+Verify the index.html file is present but typing; *ls*
+
+*TASK 2.* On your control node open an editor (such as vi) and create the following ansible playbook (be sure to start with the 3 dashes in the first line);
+
+You may need to run your editor as sudo - i.e. sudo vi simple_playbook.yml
+....
+---
+- name: install and start nginx
+  hosts: web
+  become: yes
+  tasks:
+  - name: nginx package is present
+    yum:
+      name: nginx
+      state: present
+  - name: latest index.html is present
+    copy:
+      src: index.html
+      dest: /usr/share/nginx/html 
+  - name: nginx service is started
+    service:
+      name: nginx
+      state: started
+....
+Save the file as "simple_playbook.yml".
+
+*TASK 3.* Verify the syntax of the ansible playbook you just created by typing; +
+*ansible-playbook simple_playbook.yml --syntax-check*
+
+....
+Example Output:
+$ ansible-playbook simple_playbook.yml --syntax-check
+playbook: simple_playbook.yml
+....
+
+*TASK 4.* Run the ansible playbook you just created by typing; +
+*ansible-playbook simple_playbook.yml*
+
+....
+Example Output:
+$ ansible-playbook simple_playbook.yml
+PLAY [install and start nginx] *******************************************************************************************************
+TASK [Gathering Facts] ***************************************************************************************************************
+ok: [node-1]
+ok: [node-2]
+ok: [node-3]
+TASK [nginx package is present] ******************************************************************************************************
+ok: [node-1]
+ok: [node-3]
+ok: [node-2]
+TASK [latest index.html is present] **************************************************************************************************
+changed: [node-1]
+changed: [node-3]
+changed: [node-2]
+TASK [nginx service is started] ******************************************************************************************************
+changed: [node-1]
+changed: [node-2]
+changed: [node-3]
+PLAY RECAP ***************************************************************************************************************************
+node-1                     : ok=4    changed=2    unreachable=0    failed=0   
+node-2                     : ok=4    changed=2    unreachable=0    failed=0   
+node-3                     : ok=4    changed=2    unreachable=0    failed=0   
+....
+
+*TASK 4:* Verify nginx has been installed by testing one of your nodes. Open a browser on your laptop and point to the public IP address of one of your nodes (not the control node). +
+i.e. http://34.229.6.4
+
+If successful, you should see a web page with the Ansible logo.
+
+
+*Lab #4. Basic_Playbook (A more practical playbook)*
+
+Create an Ansible playbook that will assure nginx is present, configured and running on all hosts in the "web" group:
+
+....
+1. Has variables for `nginx_test_message` and `nginx_keepalive_timeout`.
+2. Assures that the following yum packages are present on the each web host:
+    * nginx
+    * python-pip
+    * python-devel
+    * gcc
+3. Assure that the uwsgi pip package is present on each host.
+4. Generate a host-specific home page with the value of `nginx_test_message` for each host using the provided `index.html.j2` template.
+5. Generate a configuration with the value of `nginx_keepalive_timeout` for each host using the provided `nginx.conf.j2` template.
+6. Assure that nginx is running on each host.
+7. The playbook should restart nginx if the homepage or configuration file is altered.
+....
+
+While developing the playbook use the `--syntax-check` to check your work and debug problems. 
+
+Run your playbook in verbose mode using the `-v` switch to get more information on what Ansible is doing.
+
+Try `-vv` and `-vvv` for added verbosity. Also consider running `--check` to do a dry-run as you are developing.
+
+*TASK 1.* On your control node, change to the directory; /home/studentnn/lightbulb/workshops/basic_playbook/resources (please note you will need to specify the correct user under the home directory)
+
+To change directories, type; +
+*cd /home/studentnn/lightbulb/workshops/ansible_engine/basic_playbook/resources*
+
+Verify the index.html.j2 and nginx.conf.j2 files are present by typing; *ls*
+
+
+*TASK 2.* On your control node open an editor (such as vi) and create the following ansible playbook (be sure to start with the 3 dashes in the first line);
+....
+---
+- name: install and start nginx with wsgi
+  hosts: web
+  become: yes
+  vars:
+    nginx_packages:
+      - nginx
+      - python-pip
+      - python-devel
+      - gcc
+    nginx_test_message: This is a test message
+    nginx_keepalive_timeout: 115
+    nginx_webserver_port: 80
+  tasks:
+    - name: nginx packages are present
+      yum:
+        name: "{{ item }}"
+        state: present
+      with_items: "{{ nginx_packages }}"
+      notify: restart nginx service
+    - name: uwsgi package is present
+      pip:
+        name: uwsgi
+        state: present
+      notify: restart nginx service
+    - name: latest default.conf is present
+      template:
+        src: nginx.conf.j2
+        dest: /etc/nginx/nginx.conf
+        backup: yes
+      notify: restart nginx service
+    - name: latest index.html is present
+      template:
+        src: index.html.j2
+        dest: /usr/share/nginx/html/index.html
+    - name: nginx service is started and enabled
+      service:
+        name: nginx
+        state: started
+        enabled: yes
+    # smoke test that nginx came up and is serving home page
+    - name: proper response from localhost can be received
+      uri:
+        url: http://localhost/
+        return_content: yes
+      register: response
+      until: 'nginx_test_message in response.content'
+      retries: 10
+      delay: 1
+  handlers:
+    - name: restart nginx service
+      service:
+        name: nginx
+        state: restarted
+....
+Save the file as "basic_playbook.yml".
+
+
+*TASK 3.* Verify the syntax of the ansible playbook you just created by typing; +
+*ansible-playbook basic_playbook.yml --syntax-check*
+
+....
+Example Output:
+$ ansible-playbook basic_playbook.yml --syntax-check
+playbook: basic_playbook.yml
+....
+
+Then run the playbook by typing: +
+*ansible-playbook basic_playbook.yml*
+
+....
+Example Output:
+$ ansible-playbook basic_playbook.yml
+PLAY [install and start nginx with wsgi] *********************************************************************************************
+TASK [Gathering Facts] ***************************************************************************************************************
+ok: [node-1]
+ok: [node-3]
+ok: [node-2]
+TASK [nginx packages are present] ****************************************************************************************************
+ok: [node-1] => (item=[u'nginx', u'python-pip', u'python-devel', u'gcc'])
+ok: [node-2] => (item=[u'nginx', u'python-pip', u'python-devel', u'gcc'])
+ok: [node-3] => (item=[u'nginx', u'python-pip', u'python-devel', u'gcc'])
+TASK [uwsgi package is present] ******************************************************************************************************
+ok: [node-1]
+ok: [node-2]
+ok: [node-3]
+TASK [latest default.conf is present] ************************************************************************************************
+changed: [node-1]
+changed: [node-2]
+changed: [node-3]
+TASK [latest index.html is present] **************************************************************************************************
+changed: [node-1]
+changed: [node-2]
+changed: [node-3]
+TASK [nginx service is started and enabled] ******************************************************************************************
+changed: [node-1]
+changed: [node-2]
+changed: [node-3]
+TASK [proper response from localhost can be received] ********************************************************************************
+ok: [node-1]
+ok: [node-2]
+ok: [node-3]
+RUNNING HANDLER [restart nginx service] **********************************************************************************************
+changed: [node-2]
+changed: [node-1]
+changed: [node-3]
+PLAY RECAP ***************************************************************************************************************************
+node-1                     : ok=8    changed=4    unreachable=0    failed=0   
+node-2                     : ok=8    changed=4    unreachable=0    failed=0   
+node-3                     : ok=8    changed=4    unreachable=0    failed=0 
+....
+
+Verify nginx has been installed by testing one of your nodes. Open a browser on your laptop and point to the public IP address of one of your nodes (not the control node). +
+i.e. http://34.229.6.4
+
+If successful, you should see a web page with the Ansible logo but now with the text: *"This is a Test Message"*
+
+
+*TASK 4.* Extra Credit
+
+Create, run and verify a seperate playbook that stops and removes nginx along with its configuration file and home page.
+
+....
+Playbook Solution:
+---
+- name: removes nginx with wsgi
+  hosts: web
+  become: yes
+  tasks:
+    - name: nginx service is stopped
+      service:
+        name: nginx
+        state: stopped
+      ignore_errors: yes
+    - name: nginx package is absent
+      yum:
+        name: nginx
+        state: absent
+    - name: uwsgi package is absent
+      pip:
+        name: uwsgi
+        state: absent
+    - name: files created by nginx-simple are absent
+      file:
+        name: "{{ item }}"
+        state: absent
+      with_items:
+        - /etc/nginx/nginx.conf
+        - /usr/share/nginx/html/index.html
+....
+
+*Lab #5.* Roles +
+Your assignment is simple: refactor the Ansible playbook you've been developing into a role called "nginx-simple".
+
+This assignment should result in a drop in replacement that is portable and more modular. It does not add any new tasks or functionality.
+
+1. Initialize your role with `ansible-galaxy init` in a new subdirectory `roles/`.
+
+2. Refactor your existing basic playbook and associated resources into your role.
+
+3. Create a new playbook that uses the role still targeting the "web" group.
+
+*TASK 1:* cd /home/student1/lightbulb/workshops/roles +
+*TASK 2:* mkdir nginx-role +
+*TASK 3:* cd nginx-role +
+*TASK 4:* mkdir roles +
+*TASK 5:* cd roles +
+*TASK 6:* Type; ansible-galaxy init nginx-simple +
+*TASK 7:* cd nginx-simple +
+*TASK 8:* Type ls and verify your directory structure;
+
+....
+$ ls
+defaults  
+files  
+handlers  
+meta  
+README.md  
+tasks  
+templates  
+tests  
+vars
+....
+
+
+*TASK 9:* Edit the main.yml files, index.html.j2, nginx.conf.j2 and remove.yml file accordingly (tree structure supplied below for your reference);
+
+....
++-- README.md
++-- remove.yml
++-- roles
+   +-- nginx-simple
+       +-- defaults
+          +-- main.yml
+       +-- handlers
+          +-- main.yml
+       +-- tasks
+          +-- main.yml
+          +-- remove.yml
+       +-- templates
+          +-- index.html.j2
+          +-- nginx.conf.j2
+       +-- vars
+           +-- main.yml
++-- site.yml
+....
+
+File text below; +
+*/defaults/main.yml;*
+....
+---
+# defaults file for nginx
+nginx_test_message: This is a test message
+nginx_keepalive_timeout: 115
+....
+
+*/handlers/main.yml;*
+....
+---
+# handlers file for nginx
+- name: restart nginx service
+  service:
+    name: nginx
+    state: restarted
+....
+
+*/tasks/main.yml;*
+....
+---
+# tasks file for nginx
+- name: nginx packages are present
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ nginx_packages }}"
+  notify: restart nginx service
+- name: uwsgi package is present
+  pip:
+    name: uwsgi
+    state: present
+  notify: restart nginx service
+- name: latest default.conf is present 
+  template:
+    src: templates/nginx.conf.j2
+    dest: /etc/nginx/nginx.conf
+    backup: yes
+  notify: restart nginx service
+- name: latest index.html is present
+  template:
+    src: templates/index.html.j2
+    dest: /usr/share/nginx/html/index.html
+- name: nginx service is started and enabled
+  service:
+    name: nginx
+    state: started
+    enabled: yes
+
+# smoke test that nginx came up and is serving home page
+- name: proper response from localhost is received
+  uri:
+    url: http://localhost/
+    return_content: yes
+  register: response
+  until: 'nginx_test_message in response.content'
+  retries: 10
+  delay: 1
+....
+
+*/tasks/remove.yml;*
+....
+---
+# tasks file the removes nginx and uwsgi
+# derived from examples/nginx-remove-playbook
+- name: stop nginx service
+  service:
+    name: nginx
+    state: stopped
+  ignore_errors: yes
+- name: remove nginx package
+  yum:
+    name: nginx
+    state: absent
+- name: remove uwsgi
+  pip:
+    name: uwsgi
+    state: absent
+- name: clean up files created by nginx-simple
+  file:
+    name: "{{ item }}"
+    state: absent
+  with_items:
+    - /etc/nginx/nginx.conf
+    - /usr/share/nginx/html/index.html
+....
+
+*/templates/index.html.j2;*
+....
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Ansible: Automation for Everyone</title>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+  <style>
+body {
+    font-family: 'Open Sans', sans-serif;
+    text-align: center;
+}
+.container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -moz-transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+    font-size: 200%;
+}
+footer {
+    width: 100%;
+    bottom: 0;
+    position: fixed;
+    font-size: 75%;
+}
+img {
+    margin: 0 auto;
+}
+  </style>
+</head>
+<body>
+<div class="container">
+    <img src="https://www.ansible.com/hubfs/2017_Images/BrandPage/Brand-Assets/Ansible_RH_AnsibleAutomation_RGB_RedBlack.png" width="75%"/>
+    <p>{{ nginx_test_message }}</p>
+</div>
+<footer>{{ inventory_hostname }}<br />Red Hat Ansible</footer>
+</body>
+</html>
+....
+
+*/templates/nginx.conf.j2;*
+....
+# Based on nginx version: nginx/1.10.1
+# For more information on configuration, see:
+#   * Official English Documentation: http://nginx.org/en/docs/
+#   * Official Russian Documentation: http://nginx.org/ru/docs/
+user nginx;
+worker_processes auto;
+error_log /var/log/nginx/error.log;
+pid /run/nginx.pid;
+# Load dynamic modules. See /usr/share/nginx/README.dynamic.
+include /usr/share/nginx/modules/*.conf;
+events {
+    worker_connections 1024;
+}
+http {
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
+    access_log  /var/log/nginx/access.log  main;
+    sendfile            on;
+    tcp_nopush          on;
+    tcp_nodelay         on;
+    keepalive_timeout   {{ nginx_keepalive_timeout | default(65) }};
+    types_hash_max_size 2048;
+    include             /etc/nginx/mime.types;
+    default_type        application/octet-stream;
+    # Load modular configuration files from the /etc/nginx/conf.d directory.
+    # See http://nginx.org/en/docs/ngx_core_module.html#include
+    # for more information.
+    include /etc/nginx/conf.d/*.conf;
+    server {
+        listen       80 default_server;
+        listen       [::]:80 default_server;
+        server_name  _;
+        root         /usr/share/nginx/html;
+        # Load configuration files for the default server block.
+        include /etc/nginx/default.d/*.conf;
+        location / {
+        }
+        error_page 404 /404.html;
+            location = /40x.html {
+        }
+        error_page 500 502 503 504 /50x.html;
+            location = /50x.html {
+        }
+    }
+# Settings for a TLS enabled server.
+#
+#    server {
+#        listen       443 ssl http2 default_server;
+#        listen       [::]:443 ssl http2 default_server;
+#        server_name  _;
+#        root         /usr/share/nginx/html;
+#
+#        ssl_certificate "/etc/pki/nginx/server.crt";
+#        ssl_certificate_key "/etc/pki/nginx/private/server.key";
+#        ssl_session_cache shared:SSL:1m;
+#        ssl_session_timeout  10m;
+#        ssl_ciphers HIGH:!aNULL:!MD5;
+#        ssl_prefer_server_ciphers on;
+#
+#        # Load configuration files for the default server block.
+#        include /etc/nginx/default.d/*.conf;
+#
+#        location / {
+#        }
+#
+#        error_page 404 /404.html;
+#            location = /40x.html {
+#        }
+#
+#        error_page 500 502 503 504 /50x.html;
+#            location = /50x.html {
+#        }
+#    }
+}
+....
+
+*/vars/main.yml;*
+....
+---
+# vars file for nginx
+nginx_packages:
+  - nginx
+  - python-pip
+  - python-devel
+  - gcc
+....
+
+*TASK 10:* Type cd .. <enter> twice to verify you are back at your /home/student1/lightbulb/workshops/roles/nginx-role directory
+
+*TASK 11:* Here, create a site.yml file with the following contents;
+....
+---
+- hosts: web
+  name: This is a Playbook
+  become: yes
+  roles:
+    - { role: 'nginx-simple' }
+....
+
+Now you can run your playbook to have the role setup your nginx webpage; +
+*ansible-playbook site.yml*
+
+Once you have successfully run your new playbook (site.yml), test it by opening a web browser and point it to one of your web servers (not the control machine) by typing *http://<<web-server-ip-address>>.* 
+
+
+NOTE: refer back to your lab machine ID's
+
+You should see a web page with a test message.
+
+You have completed Lab 5!
