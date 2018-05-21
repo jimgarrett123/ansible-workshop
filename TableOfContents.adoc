@@ -1,6 +1,6 @@
 = Ansible Workshop Table Of Contents
 
-* Servers. [Lab Servers](Lab-Servers-IPs-and-Credentials.adoc)
+* Servers. link:Lab-Servers-IPs-and-Credentials.adoc[Lab Servers]
 * Lab 0. link:Ansible-Core-Workshop-Labs.adoc[Ansible Core Workshop Labs]
 * Lab 1. link:Installing-Ansible-Tower-Workshop-Labs.adoc[Installing Ansible Tower]
 * Lab 2. link:Configuring-Ansible-Tower.adoc[Configuring Ansible Tower]
