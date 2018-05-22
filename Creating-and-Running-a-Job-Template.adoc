@@ -9,7 +9,7 @@ Job templates are useful to execute the same job many times.
 
 *Step 1:* Select TEMPLATES
 
-*Step 2:* Click on ADD Add
+*Step 2:* Click on ADD image:images/add.png[]
 
 *Step 3:* Complete the form using the following values and SAVE
 
@@ -72,7 +72,7 @@ Now that you've sucessfully created your Job Template, you are ready to launch i
 
 NOTE: Alternatively, if you haven't navigated away from the job templates creation page, you can scroll down to see all existing job templates
 
-*Step 2:* Click on the rocketship icon Add for the Apache Basic Job Template
+*Step 2:* Click on the rocketship icon image:images/rocket.png[] for the *Apache Basic Job Template*
 
 *Step 3:* When prompted, enter your desired test message
 
