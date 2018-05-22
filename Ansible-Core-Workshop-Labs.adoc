@@ -662,7 +662,7 @@ nginx_packages:
   - gcc
 ....
 
-*TASK 10:* Type cd .. <enter> twice to verify you are back at your /home/student1/lightbulb/workshops/roles/nginx-role directory
+*TASK 10:* Type cd .. <enter> twice to verify you are back at your /home/student1/lightbulb/workshops/roles/nginx-simple directory
 
 *TASK 11:* Here, create a site.yml file with the following contents;
 ....
