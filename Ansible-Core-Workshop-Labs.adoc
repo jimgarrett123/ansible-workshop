@@ -107,7 +107,7 @@ node-3 | SUCCESS => {
 *TASK 4. EXTRA CREDIT: Try running the following commands on your control node and review the output. The last command shows how to specify a specific node for exclusion using the "--limit" switch.*
 
 *$ ansible all -m setup -a "gather_subset=virtual"* +
-*$ ansible all -m setup -a "filter=ansible_fqdn*"* +
+*$ ansible all -m setup -a "filter=ansible_fqdn"* +
 *$ ansible all -m command -a "uptime"* +
 *$ ansible all -m ping --limit '!control'*
 
