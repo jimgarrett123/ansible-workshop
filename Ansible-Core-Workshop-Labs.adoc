@@ -29,11 +29,13 @@ host_key_checking = False
 
 TASK 1. Test that Ansible is setup correctly to communicate with all hosts in your inventory using the `ping` module;
 
-*ansible all -m ping*
+[.lead]
+*$ ansible all -m ping*
 
 TASK 2. Fetch and display to STDOUT Ansible facts using the `setup` module;
 
-*ansible all -m setup*
+[.lead]
+*$ ansible all -m setup*
 
 Example Output;
 ....
@@ -70,9 +72,10 @@ node-2 | SUCCESS => {
 ....
 
 
+[.lead]
 *TASK 3. Setup and enable the EPEL package repository on the hosts in the "web" group using the yum module;*
 
-ansible web -b -m yum -a "name=https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm state=present"
+*$ ansible web -b -m yum -a "name=https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm state=present"*
 
 NOTE: Run this the command the first time and notice the changes as identified in stdout.
 
@@ -103,10 +106,10 @@ node-3 | SUCCESS => {
 ....
 *TASK 4. EXTRA CREDIT: Try running the following commands on your control node and review the output. The last command shows how to specify a specific node for exclusion using the "--limit" switch.*
 
-*ansible all -m setup -a "gather_subset=virtual"* +
-*ansible all -m setup -a "filter=ansible_fqdn*"* +
-*ansible all -m command -a "uptime"* +
-*ansible all -m ping --limit '!control'*
+*$ ansible all -m setup -a "gather_subset=virtual"* +
+*$ ansible all -m setup -a "filter=ansible_fqdn*"* +
+*$ ansible all -m command -a "uptime"* +
+*$ ansible all -m ping --limit '!control'*
 
 
 
@@ -121,7 +124,7 @@ This playbook assures the hosts in a group called "web" has the Nginx web server
 *TASK 1.* On your control node, change to the directory; /home/studentnn/lightbulb/workshops/simple_playbook/resources (please note you will need to specify the correct user under the home directory)
 
 To change directories, type; +
-*cd /home/studentnn/lightbulb/workshops/ansible_engine/simple_playbook/resources *
+*$ cd /home/studentnn/lightbulb/workshops/ansible_engine/simple_playbook/resources*
 
 Verify the index.html file is present but typing; *ls*
 
@@ -150,7 +153,8 @@ You may need to run your editor as sudo - i.e. sudo vi simple_playbook.yml
 Save the file as "simple_playbook.yml".
 
 *TASK 3.* Verify the syntax of the ansible playbook you just created by typing; +
-*ansible-playbook simple_playbook.yml --syntax-check*
+
+*$ ansible-playbook simple_playbook.yml --syntax-check*
 
 ....
 Example Output:
@@ -159,7 +163,7 @@ playbook: simple_playbook.yml
 ....
 
 *TASK 4.* Run the ansible playbook you just created by typing; +
-*ansible-playbook simple_playbook.yml*
+*$ ansible-playbook simple_playbook.yml*
 
 ....
 Example Output:
@@ -221,7 +225,7 @@ Try `-vv` and `-vvv` for added verbosity. Also consider running `--check` to do 
 *TASK 1.* On your control node, change to the directory; /home/studentnn/lightbulb/workshops/basic_playbook/resources (please note you will need to specify the correct user under the home directory)
 
 To change directories, type; +
-*cd /home/studentnn/lightbulb/workshops/ansible_engine/basic_playbook/resources*
+*$ cd /home/studentnn/lightbulb/workshops/ansible_engine/basic_playbook/resources*
 
 Verify the index.html.j2 and nginx.conf.j2 files are present by typing; *ls*
 
@@ -287,7 +291,7 @@ Save the file as "basic_playbook.yml".
 
 
 *TASK 3.* Verify the syntax of the ansible playbook you just created by typing; +
-*ansible-playbook basic_playbook.yml --syntax-check*
+*$ ansible-playbook basic_playbook.yml --syntax-check*
 
 ....
 Example Output:
@@ -296,7 +300,7 @@ playbook: basic_playbook.yml
 ....
 
 Then run the playbook by typing: +
-*ansible-playbook basic_playbook.yml*
+*$ ansible-playbook basic_playbook.yml*
 
 ....
 Example Output:
@@ -671,7 +675,8 @@ nginx_packages:
 ....
 
 Now you can run your playbook to have the role setup your nginx webpage; +
-*ansible-playbook site.yml*
+
+*$ ansible-playbook site.yml*
 
 Once you have successfully run your new playbook (site.yml), test it by opening a web browser and point it to one of your web servers (not the control machine) by typing *http://<<web-server-ip-address>>.* 
 
