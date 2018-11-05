@@ -15,7 +15,8 @@ There are a number of constructs in the Ansible Tower UI that enable multi-tenan
 [.lead]
 = *Logging into Tower and Installing the License Key*
 
-*Step 1:* To log in, use the username *admin* and and the password *ansibleWS*.
+==== *+++<u>Step 1:</u>+++* 
+To log in, use the username *admin* and and the password *ansibleWS*.
 
 image::images/ansible_tower_login.jpg[]
 Figure 3: Ansible Tower Login Screen
@@ -25,13 +26,17 @@ As soon as you login, you will prompted to request a license or browse for an ex
 image::images/uploading_a_license.jpg[]
 Figure 4: Uploading a License
 
-*Step 2:* In a seperate browser tab, browse to https://www.ansible.com/workshop-license to request a workshop license.
+==== *+++<u>Step 2:</u>+++* 
+In a seperate browser tab, browse to https://www.ansible.com/workshop-license to request a workshop license.
 
-*Step 3:* Back in the Tower UI, choose *BROWSE* and upload the license file you recieved via e-mail.
+==== *+++<u>Step 3:</u>+++* 
+Back in the Tower UI, choose *BROWSE* and upload the license file you recieved via e-mail.
 
-*Step 4:* Select *"I agree to the End User License Agreement"*
+==== *+++<u>Step 4:</u>+++* 
+Select *"I agree to the End User License Agreement"*
 
-*Step 5:* Click on *SUBMIT*
+==== *+++<u>Step 5:</u>+++* 
+Click on *SUBMIT*
 
 [.lead]
 = *Creating a Credential*
@@ -40,13 +45,17 @@ Credentials are utilized by Tower for authentication when launching jobs against
 
 There are many types of credentials including machine, network, and various cloud providers. In this workshop, we are using a machine credential.
 
-*Step 1:* Select the gear icon image:images/gear.png[Gear, title="Gear"]
+==== *+++<u>Step 1:</u>+++* 
+Select the gear icon image:images/gear.png[Gear, title="Gear"]
 
-*Step 2:* Select CREDENTIALS
+==== *+++<u>Step 2:</u>+++* 
+Select CREDENTIALS
 
-*Step 3:* Click on ADD image:images/add.png[Add, title="Add"]
+==== *+++<u>Step 3:</u>+++* 
+Click on ADD image:images/add.png[Add, title="Add"]
 
-*Step 4:* Complete the form using the following entries
+==== *+++<u>Step 4:</u>+++* 
+Complete the form using the following entries
 
 |===
 *NAME* | Ansible Workshop Credential
@@ -67,18 +76,22 @@ There are many types of credentials including machine, network, and various clou
 image::images/adding_a_credential.png[]
 Figure 5: Adding a Credential
 
-Step 5: Select SAVE image:images/save.png[Save, title="Save"]
+==== *+++<u>Step 5:</u>+++* 
+Select SAVE image:images/save.png[Save, title="Save"]
 
 [.lead]
 = *Creating a Project*
 
 A Project is a logical collection of Ansible playbooks, represented in Tower. You can manage playbooks and playbook directories by either placing them manually under the Project Base Path on your Tower server, or by placing your playbooks into a source code management (SCM) system supported by Tower, including Git, Subversion, and Mercurial.
 
-*Step 1:* Click on PROJECTS
+==== *+++<u>Step 1:</u>+++* 
+Click on PROJECTS
 
-*Step 2:* Select ADD image:images/add.png[]
+==== *+++<u>Step 2:</u>+++* 
+Select ADD image:images/add.png[]
 
-*Step 3:* Complete the form using the following entries
+==== *+++<u>Step 3:</u>+++* 
+Complete the form using the following entries
 
 |===
 *NAME* | Ansible Workshop Project
@@ -98,7 +111,8 @@ A Project is a logical collection of Ansible playbooks, represented in Tower. Yo
 image::images/defining_a_project.png[]
 Figure 6: Defining a Project
 
-*Step 4:* Select SAVE image:images/save.png[Save, title='Save']
+==== *+++<u>Step 4:</u>+++* 
+Select SAVE image:images/save.png[Save, title='Save']
 
 
 [.lead]
@@ -108,11 +122,14 @@ An inventory is a collection of hosts against which jobs may be launched. Invent
 
 An Inventory can also be imported into Tower using the tower-manage command and this is how we are going to add an inventory for this workshop.
 
-*Step 1:* Click on *INVENTORIES*
+==== *+++<u>Step 1:</u>+++* 
+Click on *INVENTORIES*
 
-*Step 2:* Select ADD image:images/add.png[Add, tile='Add']
+==== *+++<u>Step 2:</u>+++* 
+Select ADD image:images/add.png[Add, tile='Add']
 
-*Step 3:* Complete the form using the following entries
+==== *+++<u>Step 3:</u>+++* 
+Complete the form using the following entries
 
 |===
 NAME | Ansible Workshop Inventory
@@ -124,13 +141,16 @@ ORGANIZATION | Default
 image::images/create_an_inventory.png[]
 Figure 7: Create an Inventory
 
-*Step 4:* Select SAVE image:images/save.png[]
+==== *+++<u>Step 4:</u>+++* 
+Select SAVE image:images/save.png[]
 
-*Step 5:* Using ssh, login to your control node
+==== *+++<u>Step 5:</u>+++* 
+Using ssh, login to your control node
 
 *ssh <username>@<IP_Address_of_your_control_node>*
 
-*Step 6:* Use the tower-manage command to import an existing inventory. (Be sure to replace <username> with your actual username)
+==== *+++<u>Step 6:</u>+++* 
+Use the tower-manage command to import an existing inventory. (Be sure to replace <username> with your actual username)
 
 *sudo tower-manage inventory_import --source=/home/<username>/lightbulb/lessons/lab_inventory/<username>-instances.txt --inventory-name="Ansible Workshop Inventory"*
 
