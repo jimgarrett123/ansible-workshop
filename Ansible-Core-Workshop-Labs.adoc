@@ -121,14 +121,14 @@ node-3 | SUCCESS => {
 This example is designed to be used as a quick introduction to playbook structure that demonstrates how Ansible works.
 This playbook assures the hosts in a group called "web" has the Nginx web server present and is started with a static custom home page. The hosts are presumed to be running a Red Hat family linux.
 
-*TASK 1.* On your control node, change to the directory; /home/studentnn/lightbulb/workshops/simple_playbook/resources (please note you will need to specify the correct user under the home directory)
+*TASK 1.* On your control node, change to the directory; /home/studentnn/lightbulb/workshops/ansible_engine/simple_playbook/resources (please note you will need to specify the correct user under the home directory)
 
 To change directories, type; +
 *$ cd /home/studentnn/lightbulb/workshops/ansible_engine/simple_playbook/resources*
 
 Verify the index.html file is present but typing; *ls*
 
-*TASK 2.* On your control node open an editor (such as vi) and create the following ansible playbook (be sure to start with the 3 dashes in the first line);
+*TASK 2.* On your control node open an editor (such as vi or nano) and create the following ansible playbook (be sure to start with the 3 dashes in the first line);
 
 You may need to run your editor as sudo - i.e. sudo vi simple_playbook.yml
 ....
@@ -230,7 +230,7 @@ To change directories, type; +
 Verify the index.html.j2 and nginx.conf.j2 files are present by typing; *ls*
 
 
-*TASK 2.* On your control node open an editor (such as vi) and create the following ansible playbook (be sure to start with the 3 dashes in the first line);
+*TASK 2.* On your control node open an editor (such as vi or nano) and create the following ansible playbook (be sure to start with the 3 dashes in the first line);
 ....
 ---
 - name: install and start nginx with wsgi
@@ -397,7 +397,7 @@ This assignment should result in a drop in replacement that is portable and more
 
 3. Create a new playbook that uses the role still targeting the "web" group.
 
-*TASK 1:* cd /home/student1/lightbulb/workshops/roles +
+*TASK 1:* cd /home/student1/lightbulb/workshops/ansibile_engine/roles +
 *TASK 2:* mkdir nginx-role +
 *TASK 3:* cd nginx-role +
 *TASK 4:* mkdir roles +
