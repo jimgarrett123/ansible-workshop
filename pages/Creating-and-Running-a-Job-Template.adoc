@@ -7,11 +7,14 @@ Job templates are useful to execute the same job many times.
 [.lead]
 =  *Creating a Job Template*
 
-*Step 1:* Select TEMPLATES
+==== *+++<u>Step 1:</u>+++* 
+Select TEMPLATES
 
-*Step 2:* Click on ADD image:images/add.png[]
+==== *+++<u>Step 2:</u>+++* 
+Click on ADD image:images/add.png[]
 
-*Step 3:* Complete the form using the following values and SAVE
+==== *+++<u>Step 3:</u>+++* 
+Complete the form using the following values and SAVE
 
 |===
 NAME | Apache Basic Job Template
@@ -36,9 +39,11 @@ OPTIONS | image:images/enable_priviledge.png[]
 image::images/detail_job_template.png[]
 Figure 11: Job Template Form
 
-*Step 4:* Select ADD SURVEY image:images/add.png[]
+==== *+++<u>Step 4:</u>+++* 
+Select ADD SURVEY image:images/add.png[]
 
-*Step 5:* Complete the survey form with following values
+==== *+++<u>Step 5:</u>+++* 
+Complete the survey form with following values
 
 |===
 PROMPT | Please enter a test message for your new website
@@ -57,31 +62,39 @@ DEFAULT ANSWER | Be creative, keep it clean, we're all professionals here
 image::images/survey_form.png[]
 Figure 12: Survey Form
 
-Step 6: Select ADD image:images/add.png[]
+==== *+++<u>Step 6:</u>+++* 
+Select ADD image:images/add.png[]
 
-Step 7: Select SAVE image:images/save.png[]
+==== *+++<u>Step 7:</u>+++* 
+Select SAVE image:images/save.png[]
 
-Step 8: Back on the main Job Template page, select SAVE image:images/save.png[] again.
+==== *+++<u>Step 8:</u>+++* 
+Back on the main Job Template page, select SAVE image:images/save.png[] again.
 
 [.lead]
 = *Running a Job Template*
 
 Now that you've sucessfully created your Job Template, you are ready to launch it. Once you do, you will be redirected to a job screen which is refreshing in realtime showing you the status of the job.
 
-*Step 1:* Select JOB TEMPLATES +
+==== *+++<u>Step 1:</u>+++* 
+Select JOB TEMPLATES +
 
 NOTE: Alternatively, if you haven't navigated away from the job templates creation page, you can scroll down to see all existing job templates
 
-*Step 2:* Click on the rocketship icon image:images/rocket.png[] for the *Apache Basic Job Template*
+==== *+++<u>Step 2:</u>+++* 
+Click on the rocketship icon image:images/rocket.png[] for the *Apache Basic Job Template*
 
-*Step 3:* When prompted, enter your desired test message
+==== *+++<u>Step 3:</u>+++* 
+When prompted, enter your desired test message
 
 image::images/survey_prompt.png[]
 Figure 13: Survey Prompt
 
-*Step 4:* Select LAUNCH image:images/launch.png[]
+==== *+++<u>Step 4:</u>+++* 
+Select LAUNCH image:images/launch.png[]
 
-Step 5: Sit back, watch the magic happen
+==== *+++<u>Step 5:</u>+++* 
+Sit back, watch the magic happen
 
 Once the job is running, on the left, you'll have details in regards to what playbook it's running, what the status is, i.e. pending, running, or complete. You'll also notice the apache_test_message being passed in as an 'extra_variable.'
 
@@ -95,7 +108,8 @@ You can also click on the nodes in the standard output under a specific task for
 image::images/play_and_task_details.png[]
 Figure 15: Play and Task Details
 
-*Step 6:* Once your job is sucessful, navigate to your new website
+==== *+++<u>Step 6:</u>+++* 
+Once your job is sucessful, navigate to your new website
 
 http://<IP_of_node-1_or_node-2>
 
