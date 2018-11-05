@@ -1,0 +1,92 @@
+= *Lab #2. Adhoc_commands*
+
+==== *+++<u>TASK 1.</u>+++* 
+Test that Ansible is setup correctly to communicate with all hosts in your inventory using the `ping` module;
+
+[.lead]
+*$ ansible all -m ping*
+
+==== *+++<u>TASK 2.</u>+++* 
+Fetch and display to STDOUT Ansible facts using the `setup` module;
+
+[.lead]
+*$ ansible all -m setup*
+
+Example Output;
+....
+node-2 | SUCCESS => {
+    "ansible_facts": {
+        "ansible_all_ipv4_addresses": [
+            "10.0.1.57"
+        ], 
+        "ansible_default_ipv4": {
+            "address": "10.0.1.57", 
+            "alias": "eth0", 
+            "broadcast": "10.0.1.255", 
+            "gateway": "10.0.1.1", 
+            "interface": "eth0", 
+            "macaddress": "0a:5e:fb:bf:e8:aa", 
+            "mtu": 9001, 
+            "netmask": "255.255.255.0", 
+            "network": "10.0.1.0", 
+            "type": "ether"
+        }, 
+        "ansible_default_ipv6": {}, 
+        "ansible_device_links": {
+            "ids": {}, 
+            "labels": {}, 
+            "masters": {}, 
+            "uuids": {
+                "xvda2": [
+                    "65722bd1-fccc-453e-a96a-8f3599aa0466"
+                ]
+            }
+        }, 
+
+<<< Output Truncated >>>
+....
+
+
+[.lead]
+==== *+++<u>TASK 3.</u>+++* 
+Setup and enable the EPEL package repository on the hosts in the "web" group using the yum module;
+
+*$ ansible web -b -m yum -a "name=https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm state=present"*
+
+NOTE: Run this the command the first time and notice the changes as identified in stdout.
+
+==== *+++<u>TASK 3-b.</u>+++*
+Re-run the above command and notice ansible does not attempt any changes as the package has been installed. the new output from re-running the command should be similar to below;
+
+....
+node-1 | SUCCESS => {
+    "changed": false, 
+    "failed": false, 
+    "msg": "", 
+    "rc": 0, 
+    "results": []
+}
+node-2 | SUCCESS => {
+    "changed": false, 
+    "failed": false, 
+    "msg": "", 
+    "rc": 0, 
+    "results": []
+}
+node-3 | SUCCESS => {
+    "changed": false, 
+    "failed": false, 
+    "msg": "", 
+    "rc": 0, 
+    "results": []
+}
+....
+==== *+++<u>TASK 4.</u>+++* 
+EXTRA CREDIT: Try running the following commands on your control node and review the output. The last command shows how to specify a specific node for exclusion using the "--limit" switch.
+
+*$ ansible all -m setup -a "gather_subset=virtual"* +
+*$ ansible all -m setup -a "filter=ansible_fqdn"* +
+*$ ansible all -m command -a "uptime"* +
+*$ ansible all -m ping --limit '!control'*
+
+

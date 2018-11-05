@@ -1,0 +1,20 @@
+= *Lab #1. Ansible_Install*
+
+For this lab, ansible has already been installed during the lab provisioning process.
+
+To verify ansible is installed on your control machine (TRAINING-LAB-studentnn-ansible), ssh into the VM and type;
+
+*ansible --version* +
+*ansible --help*
+
+
+Verify your ansible.cfg file looks like the following by typing cat ~/.ansible.cfg +
+Example output: +
+$ cat ~/.ansible.cfg
+....
+[defaults]
+connection = smart
+timeout = 60
+inventory = ~instruct1/lightbulb/lessons/lab_inventory/instruct1-instances.txt
+host_key_checking = False
+....

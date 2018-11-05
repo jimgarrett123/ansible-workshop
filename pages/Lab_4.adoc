@@ -1,0 +1,189 @@
+= *Lab #4. Basic_Playbook*
+
+Create an Ansible playbook that will assure nginx is present, configured and running on all hosts in the "web" group:
+
+....
+1. Has variables for `nginx_test_message` and `nginx_keepalive_timeout`.
+2. Assures that the following yum packages are present on the each web host:
+    * nginx
+    * python-pip
+    * python-devel
+    * gcc
+3. Assure that the uwsgi pip package is present on each host.
+4. Generate a host-specific home page with the value of `nginx_test_message` for each host using the provided `index.html.j2` template.
+5. Generate a configuration with the value of `nginx_keepalive_timeout` for each host using the provided `nginx.conf.j2` template.
+6. Assure that nginx is running on each host.
+7. The playbook should restart nginx if the homepage or configuration file is altered.
+....
+
+While developing the playbook use the `--syntax-check` to check your work and debug problems. 
+
+Run your playbook in verbose mode using the `-v` switch to get more information on what Ansible is doing.
+
+Try `-vv` and `-vvv` for added verbosity. Also consider running `--check` to do a dry-run as you are developing.
+
+==== *+++<u>TASK 1.</u>+++* 
+On your control node, change to the directory */home/studentnn/lightbulb/workshops/ansbile_engine/basic_playbook/resources* (please note you will need to specify the correct user under the home directory)
+
+To change directories, type; +
+*$ cd /home/studentnn/lightbulb/workshops/ansible_engine/basic_playbook/resources*
+
+Verify the index.html.j2 and nginx.conf.j2 files are present by typing; *ls*
+
+
+==== *+++<u>TASK 2.</u>+++* 
+On your control node open an editor (such as vi or nano) and create the following ansible playbook (be sure to start with the 3 dashes in the first line);
+....
+---
+- name: install and start nginx with wsgi
+  hosts: web
+  become: yes
+  vars:
+    nginx_packages:
+      - nginx
+      - python-pip
+      - python-devel
+      - gcc
+    nginx_test_message: This is a test message
+    nginx_keepalive_timeout: 115
+    nginx_webserver_port: 80
+  tasks:
+    - name: nginx packages are present
+      yum:
+        name: "{{ item }}"
+        state: present
+      with_items: "{{ nginx_packages }}"
+      notify: restart nginx service
+    - name: uwsgi package is present
+      pip:
+        name: uwsgi
+        state: present
+      notify: restart nginx service
+    - name: latest default.conf is present
+      template:
+        src: nginx.conf.j2
+        dest: /etc/nginx/nginx.conf
+        backup: yes
+      notify: restart nginx service
+    - name: latest index.html is present
+      template:
+        src: index.html.j2
+        dest: /usr/share/nginx/html/index.html
+    - name: nginx service is started and enabled
+      service:
+        name: nginx
+        state: started
+        enabled: yes
+    # smoke test that nginx came up and is serving home page
+    - name: proper response from localhost can be received
+      uri:
+        url: http://localhost/
+        return_content: yes
+      register: response
+      until: 'nginx_test_message in response.content'
+      retries: 10
+      delay: 1
+  handlers:
+    - name: restart nginx service
+      service:
+        name: nginx
+        state: restarted
+....
+Save the file as "basic_playbook.yml".
+
+
+==== *+++<u>TASK 3.</u>+++* 
+Verify the syntax of the ansible playbook you just created by typing; +
+*$ ansible-playbook basic_playbook.yml --syntax-check*
+
+....
+Example Output:
+$ ansible-playbook basic_playbook.yml --syntax-check
+playbook: basic_playbook.yml
+....
+
+Then run the playbook by typing: +
+*$ ansible-playbook basic_playbook.yml*
+
+....
+Example Output:
+$ ansible-playbook basic_playbook.yml
+PLAY [install and start nginx with wsgi] *********************************************************************************************
+TASK [Gathering Facts] ***************************************************************************************************************
+ok: [node-1]
+ok: [node-3]
+ok: [node-2]
+TASK [nginx packages are present] ****************************************************************************************************
+ok: [node-1] => (item=[u'nginx', u'python-pip', u'python-devel', u'gcc'])
+ok: [node-2] => (item=[u'nginx', u'python-pip', u'python-devel', u'gcc'])
+ok: [node-3] => (item=[u'nginx', u'python-pip', u'python-devel', u'gcc'])
+TASK [uwsgi package is present] ******************************************************************************************************
+ok: [node-1]
+ok: [node-2]
+ok: [node-3]
+TASK [latest default.conf is present] ************************************************************************************************
+changed: [node-1]
+changed: [node-2]
+changed: [node-3]
+TASK [latest index.html is present] **************************************************************************************************
+changed: [node-1]
+changed: [node-2]
+changed: [node-3]
+TASK [nginx service is started and enabled] ******************************************************************************************
+changed: [node-1]
+changed: [node-2]
+changed: [node-3]
+TASK [proper response from localhost can be received] ********************************************************************************
+ok: [node-1]
+ok: [node-2]
+ok: [node-3]
+RUNNING HANDLER [restart nginx service] **********************************************************************************************
+changed: [node-2]
+changed: [node-1]
+changed: [node-3]
+PLAY RECAP ***************************************************************************************************************************
+node-1                     : ok=8    changed=4    unreachable=0    failed=0   
+node-2                     : ok=8    changed=4    unreachable=0    failed=0   
+node-3                     : ok=8    changed=4    unreachable=0    failed=0 
+....
+
+Verify nginx has been installed by testing one of your nodes. Open a browser on your laptop and point to the public IP address of one of your nodes (not the control node). +
+i.e. http://34.229.6.4
+
+If successful, you should see a web page with the Ansible logo but now with the text: *"This is a Test Message"*
+
+
+==== *+++<u>TASK 4.</u>+++* 
+Extra Credit
+
+Create, run and verify a seperate playbook that stops and removes nginx along with its configuration file and home page.
+
+....
+Playbook Solution:
+---
+- name: removes nginx with wsgi
+  hosts: web
+  become: yes
+  tasks:
+    - name: nginx service is stopped
+      service:
+        name: nginx
+        state: stopped
+      ignore_errors: yes
+    - name: nginx package is absent
+      yum:
+        name: nginx
+        state: absent
+    - name: uwsgi package is absent
+      pip:
+        name: uwsgi
+        state: absent
+    - name: files created by nginx-simple are absent
+      file:
+        name: "{{ item }}"
+        state: absent
+      with_items:
+        - /etc/nginx/nginx.conf
+        - /usr/share/nginx/html/index.html
+....
+

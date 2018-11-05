@@ -1,0 +1,305 @@
+= *Lab #5.* Roles +
+Your assignment is simple: refactor the Ansible playbook you've been developing into a role called "nginx-simple".
+
+This assignment should result in a drop in replacement that is portable and more modular. It does not add any new tasks or functionality.
+
+
+
+==== *+++<u>TASK 1:</u>+++* 
+Initialize your role with `ansible-galaxy init` in a new subdirectory `roles/`.
+
+$ cd /home/student1/lightbulb/workshops/ansibile_engine/roles +
+$ mkdir nginx-role +
+$ cd nginx-role +
+$ mkdir roles +
+$ cd roles +
+$ ansible-galaxy init nginx-simple +
+$ cd nginx-simple +
+$ ls
+
+....
+$ ls
+defaults  
+files  
+handlers  
+meta  
+README.md  
+tasks  
+templates  
+tests  
+vars
+....
+
+
+==== *+++<u>TASK 2:</u>+++* 
+Refactor your existing basic playbook and associated resources into your role. +
+
+Edit the main.yml files, index.html.j2, nginx.conf.j2 and remove.yml file accordingly +
+(tree structure supplied below for your reference);
+
+....
++-- README.md
++-- remove.yml
++-- roles
+   +-- nginx-simple
+       +-- defaults
+          +-- main.yml
+       +-- handlers
+          +-- main.yml
+       +-- tasks
+          +-- main.yml
+          +-- remove.yml
+       +-- templates
+          +-- index.html.j2
+          +-- nginx.conf.j2
+       +-- vars
+           +-- main.yml
++-- site.yml
+....
+
+*/defaults/main.yml;*
+....
+---
+# defaults file for nginx
+nginx_test_message: This is a test message
+nginx_keepalive_timeout: 115
+....
+
+*/handlers/main.yml;*
+....
+---
+# handlers file for nginx
+- name: restart nginx service
+  service:
+    name: nginx
+    state: restarted
+....
+
+*/tasks/main.yml;*
+....
+---
+# tasks file for nginx
+- name: nginx packages are present
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ nginx_packages }}"
+  notify: restart nginx service
+- name: uwsgi package is present
+  pip:
+    name: uwsgi
+    state: present
+  notify: restart nginx service
+- name: latest default.conf is present 
+  template:
+    src: templates/nginx.conf.j2
+    dest: /etc/nginx/nginx.conf
+    backup: yes
+  notify: restart nginx service
+- name: latest index.html is present
+  template:
+    src: templates/index.html.j2
+    dest: /usr/share/nginx/html/index.html
+- name: nginx service is started and enabled
+  service:
+    name: nginx
+    state: started
+    enabled: yes
+
+# smoke test that nginx came up and is serving home page
+- name: proper response from localhost is received
+  uri:
+    url: http://localhost/
+    return_content: yes
+  register: response
+  until: 'nginx_test_message in response.content'
+  retries: 10
+  delay: 1
+....
+
+*/tasks/remove.yml;*
+....
+---
+# tasks file the removes nginx and uwsgi
+# derived from examples/nginx-remove-playbook
+- name: stop nginx service
+  service:
+    name: nginx
+    state: stopped
+  ignore_errors: yes
+- name: remove nginx package
+  yum:
+    name: nginx
+    state: absent
+- name: remove uwsgi
+  pip:
+    name: uwsgi
+    state: absent
+- name: clean up files created by nginx-simple
+  file:
+    name: "{{ item }}"
+    state: absent
+  with_items:
+    - /etc/nginx/nginx.conf
+    - /usr/share/nginx/html/index.html
+....
+
+*/templates/index.html.j2;*
+....
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Ansible: Automation for Everyone</title>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+  <style>
+body {
+    font-family: 'Open Sans', sans-serif;
+    text-align: center;
+}
+.container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -moz-transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+    font-size: 200%;
+}
+footer {
+    width: 100%;
+    bottom: 0;
+    position: fixed;
+    font-size: 75%;
+}
+img {
+    margin: 0 auto;
+}
+  </style>
+</head>
+<body>
+<div class="container">
+    <img src="https://www.ansible.com/hubfs/2017_Images/BrandPage/Brand-Assets/Ansible_RH_AnsibleAutomation_RGB_RedBlack.png" width="75%"/>
+    <p>{{ nginx_test_message }}</p>
+</div>
+<footer>{{ inventory_hostname }}<br />Red Hat Ansible</footer>
+</body>
+</html>
+....
+
+*/templates/nginx.conf.j2;*
+....
+# Based on nginx version: nginx/1.10.1
+# For more information on configuration, see:
+#   * Official English Documentation: http://nginx.org/en/docs/
+#   * Official Russian Documentation: http://nginx.org/ru/docs/
+user nginx;
+worker_processes auto;
+error_log /var/log/nginx/error.log;
+pid /run/nginx.pid;
+# Load dynamic modules. See /usr/share/nginx/README.dynamic.
+include /usr/share/nginx/modules/*.conf;
+events {
+    worker_connections 1024;
+}
+http {
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
+    access_log  /var/log/nginx/access.log  main;
+    sendfile            on;
+    tcp_nopush          on;
+    tcp_nodelay         on;
+    keepalive_timeout   {{ nginx_keepalive_timeout | default(65) }};
+    types_hash_max_size 2048;
+    include             /etc/nginx/mime.types;
+    default_type        application/octet-stream;
+    # Load modular configuration files from the /etc/nginx/conf.d directory.
+    # See http://nginx.org/en/docs/ngx_core_module.html#include
+    # for more information.
+    include /etc/nginx/conf.d/*.conf;
+    server {
+        listen       80 default_server;
+        listen       [::]:80 default_server;
+        server_name  _;
+        root         /usr/share/nginx/html;
+        # Load configuration files for the default server block.
+        include /etc/nginx/default.d/*.conf;
+        location / {
+        }
+        error_page 404 /404.html;
+            location = /40x.html {
+        }
+        error_page 500 502 503 504 /50x.html;
+            location = /50x.html {
+        }
+    }
+# Settings for a TLS enabled server.
+#
+#    server {
+#        listen       443 ssl http2 default_server;
+#        listen       [::]:443 ssl http2 default_server;
+#        server_name  _;
+#        root         /usr/share/nginx/html;
+#
+#        ssl_certificate "/etc/pki/nginx/server.crt";
+#        ssl_certificate_key "/etc/pki/nginx/private/server.key";
+#        ssl_session_cache shared:SSL:1m;
+#        ssl_session_timeout  10m;
+#        ssl_ciphers HIGH:!aNULL:!MD5;
+#        ssl_prefer_server_ciphers on;
+#
+#        # Load configuration files for the default server block.
+#        include /etc/nginx/default.d/*.conf;
+#
+#        location / {
+#        }
+#
+#        error_page 404 /404.html;
+#            location = /40x.html {
+#        }
+#
+#        error_page 500 502 503 504 /50x.html;
+#            location = /50x.html {
+#        }
+#    }
+}
+....
+
+*/vars/main.yml;*
+....
+---
+# vars file for nginx
+nginx_packages:
+  - nginx
+  - python-pip
+  - python-devel
+  - gcc
+....
+
+==== *+++<u>TASK 3</u>+++* 
+Type cd .. <enter> twice to verify you are back at your /home/student1/lightbulb/workshops/roles/nginx-role directory
+
+==== *+++<u>TASK 4</u>+++* 
+Create a site.yml file with the following contents;
+
+....
+---
+- hosts: web
+  name: This is a Playbook
+  become: yes
+  roles:
+    - { role: 'nginx-simple' }
+....
+
+Now you can run your playbook to have the role setup your nginx webpage; +
+
+*$ ansible-playbook site.yml*
+
+Once you have successfully run your new playbook (site.yml), test it by opening a web browser and point it to one of your web servers (not the control machine) by typing *http://<<web-server-ip-address>>.* 
+
+
+NOTE: refer back to your lab machine ID's
+
+You should see a web page with a test message.
+
+==== You have completed Lab 5!

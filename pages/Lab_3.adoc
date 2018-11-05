@@ -1,0 +1,84 @@
+= *Lab #3. Simple_playbook (nginx)* +
+This example is designed to be used as a quick introduction to playbook structure that demonstrates how Ansible works.
+This playbook assures the hosts in a group called "web" has the Nginx web server present and is started with a static custom home page. The hosts are presumed to be running a Red Hat family linux.
+
+==== *+++<u>TASK 1.</u>+++* 
+On your control node, change to the directory; /home/studentnn/lightbulb/workshops/ansible_engine/simple_playbook/resources (please note you will need to specify the correct user under the home directory)
+
+To change directories, type; +
+*$ cd /home/studentnn/lightbulb/workshops/ansible_engine/simple_playbook/resources*
+
+Verify the index.html file is present but typing; *ls*
+
+==== *+++<u>TASK 2.</u>+++* 
+On your control node open an editor (such as vi or nano) and create the following ansible playbook (be sure to start with the 3 dashes in the first line);
+
+You may need to run your editor as sudo - i.e. sudo vi simple_playbook.yml
+....
+---
+- name: install and start nginx
+  hosts: web
+  become: yes
+  tasks:
+  - name: nginx package is present
+    yum:
+      name: nginx
+      state: present
+  - name: latest index.html is present
+    copy:
+      src: index.html
+      dest: /usr/share/nginx/html 
+  - name: nginx service is started
+    service:
+      name: nginx
+      state: started
+....
+Save the file as "simple_playbook.yml".
+
+==== *+++<u>TASK 3.</u>+++* 
+Verify the syntax of the ansible playbook you just created by typing; +
+
+*$ ansible-playbook simple_playbook.yml --syntax-check*
+
+....
+Example Output:
+$ ansible-playbook simple_playbook.yml --syntax-check
+playbook: simple_playbook.yml
+....
+
+==== *+++<u>TASK 4.</u>+++* 
+Run the ansible playbook you just created by typing; +
+*$ ansible-playbook simple_playbook.yml*
+
+....
+Example Output:
+$ ansible-playbook simple_playbook.yml
+PLAY [install and start nginx] *******************************************************************************************************
+TASK [Gathering Facts] ***************************************************************************************************************
+ok: [node-1]
+ok: [node-2]
+ok: [node-3]
+TASK [nginx package is present] ******************************************************************************************************
+ok: [node-1]
+ok: [node-3]
+ok: [node-2]
+TASK [latest index.html is present] **************************************************************************************************
+changed: [node-1]
+changed: [node-3]
+changed: [node-2]
+TASK [nginx service is started] ******************************************************************************************************
+changed: [node-1]
+changed: [node-2]
+changed: [node-3]
+PLAY RECAP ***************************************************************************************************************************
+node-1                     : ok=4    changed=2    unreachable=0    failed=0   
+node-2                     : ok=4    changed=2    unreachable=0    failed=0   
+node-3                     : ok=4    changed=2    unreachable=0    failed=0   
+....
+
+==== *+++<u>TASK 5:</u>+++* 
+Verify nginx has been installed by testing one of your nodes. Open a browser on your laptop and point to the public IP address of one of your nodes (not the control node). +
+i.e. http://34.229.6.4
+
+If successful, you should see a web page with the Ansible logo.
+

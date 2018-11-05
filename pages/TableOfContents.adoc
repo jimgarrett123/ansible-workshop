@@ -1,7 +1,12 @@
 = Ansible Workshop Table Of Contents
 
-* Servers. link:Lab-Servers-IPs-and-Credentials.adoc[Lab Servers]
-* link:Ansible-Core-Workshop-Labs.adoc[Ansible Core Workshop Labs]
-* link:Installing-Ansible-Tower-Workshop-Labs.adoc[Installing Ansible Tower]
-* link:Configuring-Ansible-Tower.adoc[Configuring Ansible Tower]
-* link:Creating-and-Running-a-Job-Template.adoc[Creating and Running a Job Template]
+* Servers. link:Lab-Servers-IPs-and-Credentials.adoc[Lab Servers^]
+* Ansible Core Workshop Labs
+   - link:Lab_1.adoc[Lab 1^]
+   - link:Lab_2.adoc[Lab 2^]
+   - link:Lab_3.adoc[Lab 3^]
+   - link:Lab_4.adoc[Lab 4^]
+   - link:Lab_5.adoc[Lab 5^]
+* link:Installing-Ansible-Tower-Workshop-Labs.adoc[Installing Ansible Tower^]
+* link:Configuring-Ansible-Tower.adoc[Configuring Ansible Tower^]
+* link:Creating-and-Running-a-Job-Template.adoc[Creating and Running a Job Template^]
