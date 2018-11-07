@@ -53,18 +53,18 @@ On your control node open an editor (such as vi or nano) and create the followin
         name: "{{ item }}"
         state: present
       with_items: "{{ nginx_packages }}"
-      notify: restart nginx service
+      notify: restart-nginx-service
     - name: uwsgi package is present
       pip:
         name: uwsgi
         state: present
-      notify: restart nginx service
+      notify: restart-nginx-service
     - name: latest default.conf is present
       template:
         src: nginx.conf.j2
         dest: /etc/nginx/nginx.conf
         backup: yes
-      notify: restart nginx service
+      notify: restart-nginx-service
     - name: latest index.html is present
       template:
         src: index.html.j2
@@ -84,7 +84,7 @@ On your control node open an editor (such as vi or nano) and create the followin
       retries: 10
       delay: 1
   handlers:
-    - name: restart nginx service
+    - name: restart-nginx-service
       service:
         name: nginx
         state: restarted
@@ -137,7 +137,7 @@ TASK [proper response from localhost can be received] **************************
 ok: [node-1]
 ok: [node-2]
 ok: [node-3]
-RUNNING HANDLER [restart nginx service] **********************************************************************************************
+RUNNING HANDLER [restart-nginx-service] **********************************************************************************************
 changed: [node-2]
 changed: [node-1]
 changed: [node-3]
