@@ -179,7 +179,7 @@ Playbook Solution:
       pip:
         name: uwsgi
         state: absent
-    - name: files created by nginx-simple are absent
+    - name: files created by nginx-basic are absent
       file:
         name: "{{ item }}"
         state: absent
