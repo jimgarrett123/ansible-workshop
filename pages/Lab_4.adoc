@@ -23,7 +23,7 @@ Run your playbook in verbose mode using the `-v` switch to get more information 
 Try `-vv` and `-vvv` for added verbosity. Also consider running `--check` to do a dry-run as you are developing.
 
 ==== *+++<u>TASK 1.</u>+++* 
-On your control node, change to the directory */home/studentnn/lightbulb/workshops/ansbile_engine/basic_playbook/resources* (please note you will need to specify the correct user under the home directory)
+On your control node, change to the directory */home/studentnn/lightbulb/workshops/ansible_engine/basic_playbook/resources* (please note you will need to specify the correct user under the home directory)
 
 To change directories, type; +
 *$ cd /home/studentnn/lightbulb/workshops/ansible_engine/basic_playbook/resources*
