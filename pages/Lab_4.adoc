@@ -169,6 +169,7 @@ Playbook Solution:
       service:
         name: nginx
         state: stopped
+	enabled: false
       ignore_errors: yes
     - name: nginx package is absent
       yum:
