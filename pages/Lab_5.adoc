@@ -8,7 +8,7 @@ This assignment should result in a drop in replacement that is portable and more
 ==== *+++<u>TASK 1:</u>+++* 
 Initialize your role with `ansible-galaxy init` in a new subdirectory `roles/`.
 
-$ cd /home/student1/lightbulb/workshops/ansibile_engine/roles +
+$ cd /home/student1/lightbulb/workshops/ansible_engine/roles +
 $ mkdir nginx-role +
 $ cd nginx-role +
 $ mkdir roles +
