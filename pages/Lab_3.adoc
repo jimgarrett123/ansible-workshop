@@ -8,7 +8,7 @@ On your control node, change to the directory; /home/studentnn/lightbulb/worksho
 To change directories, type; +
 *$ cd /home/studentnn/lightbulb/workshops/ansible_engine/simple_playbook/resources*
 
-Verify the index.html file is present but typing; *ls*
+Verify the index.html file is present by typing; *ls*
 
 ==== *+++<u>TASK 2.</u>+++* 
 On your control node open an editor (such as vi or nano) and create the following ansible playbook (be sure to start with the 3 dashes in the first line);
