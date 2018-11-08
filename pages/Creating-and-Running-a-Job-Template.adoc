@@ -8,10 +8,10 @@ Job templates are useful to execute the same job many times.
 =  *Creating a Job Template*
 
 ==== *+++<u>Step 1:</u>+++* 
-Select TEMPLATES
+Select TEMPLATES icon image:images/templates.png[]
 
 ==== *+++<u>Step 2:</u>+++* 
-Click on ADD image:images/add.png[]
+Click on ADD Job Template image:images/add_job_template.png[]
 
 ==== *+++<u>Step 3:</u>+++* 
 Complete the form using the following values and SAVE
@@ -29,7 +29,7 @@ PROJECT | Ansible Workshop Project
 |
 PLAYBOOK | examples/apache-basic-playbook/site.yml
 |
-MACHINE CREDENTIAL | Ansible Workshop Credential
+CREDENTIAL | Ansible Workshop Credential
 |
 LIMIT | web
 |
@@ -40,9 +40,12 @@ image::images/detail_job_template.png[]
 Figure 11: Job Template Form
 
 ==== *+++<u>Step 4:</u>+++* 
-Select ADD SURVEY image:images/add.png[]
+Select SAVE image:images/save.png[]
 
 ==== *+++<u>Step 5:</u>+++* 
+Select ADD SURVEY image:images/add_survey.png[]
+
+==== *+++<u>Step 6:</u>+++* 
 Complete the survey form with following values
 
 |===
@@ -62,13 +65,13 @@ DEFAULT ANSWER | Be creative, keep it clean, we're all professionals here
 image::images/survey_form.png[]
 Figure 12: Survey Form
 
-==== *+++<u>Step 6:</u>+++* 
+==== *+++<u>Step 7:</u>+++* 
 Select ADD image:images/add.png[]
 
-==== *+++<u>Step 7:</u>+++* 
+==== *+++<u>Step 8:</u>+++* 
 Select SAVE image:images/save.png[]
 
-==== *+++<u>Step 8:</u>+++* 
+==== *+++<u>Step 9:</u>+++* 
 Back on the main Job Template page, select SAVE image:images/save.png[] again.
 
 [.lead]
@@ -77,7 +80,7 @@ Back on the main Job Template page, select SAVE image:images/save.png[] again.
 Now that you've sucessfully created your Job Template, you are ready to launch it. Once you do, you will be redirected to a job screen which is refreshing in realtime showing you the status of the job.
 
 ==== *+++<u>Step 1:</u>+++* 
-Select JOB TEMPLATES +
+Select JOB TEMPLATES icon image:images/templates.png[] +
 
 NOTE: Alternatively, if you haven't navigated away from the job templates creation page, you can scroll down to see all existing job templates
 

@@ -46,15 +46,12 @@ Credentials are utilized by Tower for authentication when launching jobs against
 There are many types of credentials including machine, network, and various cloud providers. In this workshop, we are using a machine credential.
 
 ==== *+++<u>Step 1:</u>+++* 
-Select the gear icon image:images/gear.png[Gear, title="Gear"]
+Select the Credentials icon image:images/credentials.png[Gear, title="Gear"]
 
 ==== *+++<u>Step 2:</u>+++* 
-Select CREDENTIALS
-
-==== *+++<u>Step 3:</u>+++* 
 Click on ADD image:images/add.png[Add, title="Add"]
 
-==== *+++<u>Step 4:</u>+++* 
+==== *+++<u>Step 3:</u>+++* 
 Complete the form using the following entries
 
 |===
@@ -64,19 +61,19 @@ Complete the form using the following entries
 |
 *ORGANIZATION* | Default
 |
-*TYPE* | Machine
+*CREDENTIAL TYPE* | Machine
 |
 *USERNAME* | Your Workshop Username - Student(x)
 |
 *PASSWORD* | Your Workshop Password
 |
-*PRIVILEGE ESCALATION* | Sudo (This is the default)
+*PRIVILEGE ESCALATION METHOD* | Sudo (This is the default)
 |===
 
 image::images/adding_a_credential.png[]
 Figure 5: Adding a Credential
 
-==== *+++<u>Step 5:</u>+++* 
+==== *+++<u>Step 4:</u>+++* 
 Select SAVE image:images/save.png[Save, title="Save"]
 
 [.lead]
@@ -85,7 +82,7 @@ Select SAVE image:images/save.png[Save, title="Save"]
 A Project is a logical collection of Ansible playbooks, represented in Tower. You can manage playbooks and playbook directories by either placing them manually under the Project Base Path on your Tower server, or by placing your playbooks into a source code management (SCM) system supported by Tower, including Git, Subversion, and Mercurial.
 
 ==== *+++<u>Step 1:</u>+++* 
-Click on PROJECTS
+Click on PROJECTS icon image:images/projects.png[Projects, title="Projects"]
 
 ==== *+++<u>Step 2:</u>+++* 
 Select ADD image:images/add.png[]
@@ -123,7 +120,7 @@ An inventory is a collection of hosts against which jobs may be launched. Invent
 An Inventory can also be imported into Tower using the tower-manage command and this is how we are going to add an inventory for this workshop.
 
 ==== *+++<u>Step 1:</u>+++* 
-Click on *INVENTORIES*
+Click on *INVENTORIES* icon image:images/inventories.png[Inventories, title='Inventories']
 
 ==== *+++<u>Step 2:</u>+++* 
 Select ADD image:images/add.png[Add, tile='Add']

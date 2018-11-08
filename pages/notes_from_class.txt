@@ -1,0 +1,9 @@
+When creating/running the roles, have them run the remove step to uninstall all the modules.
+
+Notes on Ansible Lab
+Exercise 1.2 - Configuring Ansible Tower
+ - Creating a Credential 
+   - Step 2
+     - replace the gear icon with a hamburger icon
+
+Review the entire Exercise 1.2, finding inconsistancies with the material verses what's seen on screen
