@@ -16,13 +16,13 @@ Create an Ansible playbook that will assure nginx is present, configured and run
 7. The playbook should restart nginx if the homepage or configuration file is altered.
 ....
 
-While developing the playbook use the `--syntax-check` to check your work and debug problems. 
+While developing the playbook use the `--syntax-check` to check your work and debug problems.
 
 Run your playbook in verbose mode using the `-v` switch to get more information on what Ansible is doing.
 
 Try `-vv` and `-vvv` for added verbosity. Also consider running `--check` to do a dry-run as you are developing.
 
-==== *+++<u>TASK 1.</u>+++* 
+==== *+++<u>TASK 1.</u>+++*
 On your control node, change to the directory */home/studentnn/lightbulb/workshops/ansible_engine/basic_playbook/resources* (please note you will need to specify the correct user under the home directory)
 
 To change directories, type; +
@@ -31,7 +31,7 @@ To change directories, type; +
 Verify the index.html.j2 and nginx.conf.j2 files are present by typing; *ls*
 
 
-==== *+++<u>TASK 2.</u>+++* 
+==== *+++<u>TASK 2.</u>+++*
 On your control node open an editor (such as vi or nano) and create the following ansible playbook (be sure to start with the 3 dashes in the first line);
 ....
 ---
@@ -92,7 +92,7 @@ On your control node open an editor (such as vi or nano) and create the followin
 Save the file as "basic_playbook.yml".
 
 
-==== *+++<u>TASK 3.</u>+++* 
+==== *+++<u>TASK 3.</u>+++*
 Verify the syntax of the ansible playbook you just created by typing; +
 *$ ansible-playbook basic_playbook.yml --syntax-check*
 
@@ -142,9 +142,9 @@ changed: [node-2]
 changed: [node-1]
 changed: [node-3]
 PLAY RECAP ***************************************************************************************************************************
-node-1                     : ok=8    changed=4    unreachable=0    failed=0   
-node-2                     : ok=8    changed=4    unreachable=0    failed=0   
-node-3                     : ok=8    changed=4    unreachable=0    failed=0 
+node-1                     : ok=8    changed=4    unreachable=0    failed=0
+node-2                     : ok=8    changed=4    unreachable=0    failed=0
+node-3                     : ok=8    changed=4    unreachable=0    failed=0
 ....
 
 Verify nginx has been installed by testing one of your nodes. Open a browser on your laptop and point to the public IP address of one of your nodes (not the control node). +
@@ -153,7 +153,7 @@ i.e. http://34.229.6.4
 If successful, you should see a web page with the Ansible logo but now with the text: *"This is a Test Message"*
 
 
-==== *+++<u>TASK 4.</u>+++* 
+==== *+++<u>TASK 4.</u>+++*
 Extra Credit
 
 Create, run and verify a seperate playbook that stops and removes nginx along with its configuration file and home page.
@@ -169,7 +169,7 @@ Playbook Solution:
       service:
         name: nginx
         state: stopped
-	enabled: false
+        enabled: false
       ignore_errors: yes
     - name: nginx package is absent
       yum:
